@@ -5,4 +5,4 @@ function imprimirOperacao() {
 }
 
 console.log(imprimirOperacao())
-
+async 
