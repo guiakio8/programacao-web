@@ -5,3 +5,4 @@ function imprimirOperacao() {
 }
 
 console.log(imprimirOperacao())
+
