@@ -6,3 +6,4 @@ function imprimirOperacao() {
 
 console.log(imprimirOperacao())
 
+teste
