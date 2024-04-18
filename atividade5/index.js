@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const calc = require('./util/calculadora');
 const estoque = require('./src/estoque');
 
 app.get('/', (req, res) => {
@@ -18,6 +17,7 @@ app.get('/adicionar/:id/:nome/:qtd', function (req, res) {
     let qtd = req.params.qtd;
     let p = estoque.criarProduto(id, nome, qtd);
     estoque.adicionarProduto(p);
+    res.send(estoque.listarProdutos());
 })
 
 app.get('/listar', (req, res) => {
@@ -30,3 +30,9 @@ app.get('/remover/:id', (req, res) => {
     res.send(estoque.listarProdutos());
 })
 
+app.get('/edit/:id/:qtd', (req, res) => {
+    let id = req.params.id;
+    let qtd = req.params.qtd;
+    estoque.editarProduto(id, qtd);
+    res.send(estoque.listarProdutos());
+})
