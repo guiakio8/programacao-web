@@ -1,42 +1,23 @@
 const express = require('express');
 const app = express();
-const estoque = require('./src/estoque');
+const path = require('path');
+const mustacheExpress = require('mustache-express');
+
+app.engine('html', mustacheExpress());
+app.set('view engine', 'html');
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.send('Página inicial');
-})
+    res.render('index');
+});
 
-const PORT = 8080;
+app.post('/dados', (req, res) => {
+    const { nome, endereco, telefone, dataAgendamento } = req.body;
+    res.render('dados', { nome, endereco, telefone, dataAgendamento });
+});
+
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log('app rodando na porta ' + PORT);
-})
-
-app.get('/adicionar/:id/:nome/:qtd', function (req, res) {
-    let id = req.params.id;
-    let nome = req.params.nome;
-    let qtd = req.params.qtd;
-    let p = estoque.criarProduto(id, nome, qtd);
-    estoque.adicionarProduto(p);
-    res.send(estoque.listarProdutos());
-})
-
-app.get('/listar', (req, res) => {
-    res.send(estoque.listarProdutos());
-})
-
-app.get('/remover/:id', (req, res) => {
-    let id = req.params.id;
-    estoque.removerProduto(id);
-    res.send(estoque.listarProdutos());
-})
-
-app.get('/edit/:id/:qtd', (req, res) => {
-    let id = req.params.id;
-    let qtd = req.params.qtd;
-    estoque.editarProduto(id, qtd);
-    res.send(estoque.listarProdutos());
-})
-
-app.get('/formulario', req,res)=>{
-    
-}
+    console.log(`App rodando na porta ${PORT}`);
+});
